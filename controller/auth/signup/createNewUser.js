@@ -4,13 +4,14 @@ const AppError = require("../../../utils/appError");
 const createNewUser = async (req, res, next) => {
     console.log("createNewUser middleware ...");
     const { username, email, password, passwordConfirm } = req.body;
+    console.log({ username, email, password, passwordConfirm });
     const { otp, otpExpires } = req;
 
     const NewUser = new User({
         username,
         email,
-        password,
-        passwordConfirm,
+        password: password || "",
+        passwordConfirm: passwordConfirm || "",
         otp,
         otpExpires,
     });

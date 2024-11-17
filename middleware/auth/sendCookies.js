@@ -6,14 +6,24 @@ const sendCookies = (req, res) => {
     const isForgetPassword = req.route.path === "/forget-password";
     res.isForgetPassword = isForgetPassword;
 
-    user.password = null;
-    user.passwordConfirm = null;
-    user.otp = null;
+    user.password = "";
+    user.passwordConfirm = "";
+    user.otp = "";
 
     const isResendOtp = req.route.path === "/resend-otp";
 
+    const userToSendClient = {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        isVerified: user.isVerified,
+        createdAt: user.createdAt,
+        otpExpires: user.otpExpires,
+        resetPasswordOtpExpires: user.resetPasswordOtpExpires,
+    };
+
     createCookieAndSend(
-        user,
+        userToSendClient,
         res,
         200,
         isResendOtp

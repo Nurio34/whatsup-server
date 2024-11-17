@@ -66,33 +66,33 @@ const UserSchema = new mongoose.Schema(
         },
         otp: {
             type: String,
-            default: null,
+            default: "",
         },
         otpExpires: {
             type: Date,
-            default: null,
+            default: Date.now(),
         },
         resetPasswordOtp: {
             type: String,
-            default: null,
+            default: "",
         },
         resetPasswordOtpExpires: {
             type: Date,
-            default: null,
+            default: Date.now(),
         },
         createdAt: {
             type: Date,
             default: Date.now,
         },
     },
-    { timestamps: true },
+    { timestamps: true, collection: "User" },
 );
 
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
     this.password = await bcrytp.hash(this.password, 12);
-    this.passwordConfirm = null;
+    this.passwordConfirm = "";
 });
 
 UserSchema.methods.checkPassword = async function (password) {

@@ -24,8 +24,8 @@ const resetPassword = async (req, res, next) => {
 
     user.password = newPassword;
     user.passwordConfirm = newPasswordConfirm;
-    user.resetPasswordOtp = null;
-    user.resetPasswordOtpExpires = null;
+    user.resetPasswordOtp = "";
+    user.resetPasswordOtpExpires = "";
     await user.save();
 
     const isResetPassword = req.route.path === "/reset-password";
