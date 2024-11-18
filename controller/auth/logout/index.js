@@ -4,9 +4,9 @@ const logout = (req, res) => {
     console.log("logout function");
 
     res.cookie("auth-token", "LoggedOut", {
-        expires: new Date(Date.now() + 10 * 1000),
+        expires: new Date(Date.now() + 1 * 1000),
         httpOnly: true,
-        secure: node_env === "production",
+        secure: true,
         sameSite: "none",
     });
 

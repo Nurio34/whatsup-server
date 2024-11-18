@@ -60,39 +60,47 @@ const UserSchema = new mongoose.Schema(
                 message: "Passwords don't match !",
             },
         },
+        newUser: {
+            type: Boolean,
+            default: true,
+        },
+        avatar: {
+            type: String,
+            default: "",
+        },
         isVerified: {
             type: Boolean,
             default: false,
         },
         otp: {
             type: String,
-            default: null,
+            default: "",
         },
         otpExpires: {
             type: Date,
-            default: null,
+            default: Date.now(),
         },
         resetPasswordOtp: {
             type: String,
-            default: null,
+            default: "",
         },
         resetPasswordOtpExpires: {
             type: Date,
-            default: null,
+            default: Date.now(),
         },
         createdAt: {
             type: Date,
             default: Date.now,
         },
     },
-    { timestamps: true },
+    { timestamps: true, collection: "User" },
 );
 
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
     this.password = await bcrytp.hash(this.password, 12);
-    this.passwordConfirm = null;
+    this.passwordConfirm = "";
 });
 
 UserSchema.methods.checkPassword = async function (password) {

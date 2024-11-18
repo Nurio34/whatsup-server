@@ -9,8 +9,8 @@ const createNewUser = async (req, res, next) => {
     const NewUser = new User({
         username,
         email,
-        password,
-        passwordConfirm,
+        password: password,
+        passwordConfirm: passwordConfirm,
         otp,
         otpExpires,
     });
