@@ -60,6 +60,14 @@ const UserSchema = new mongoose.Schema(
                 message: "Passwords don't match !",
             },
         },
+        newUser: {
+            type: Boolean,
+            default: true,
+        },
+        avatar: {
+            type: String,
+            default: "",
+        },
         isVerified: {
             type: Boolean,
             default: false,

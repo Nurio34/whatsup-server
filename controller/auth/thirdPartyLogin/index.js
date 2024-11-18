@@ -1,15 +1,11 @@
 const AppError = require("../../../utils/appError");
 const createCookieAndSend = require("../../../utils/createCookieAndSend");
-const prisma = require("../../../utils/prismaClient");
+const User = require("../../../model/user");
 
-const googleLogin = async (req, res, next) => {
+const thirdPartyLogin = async (req, res, next) => {
     const { username, email, avatar } = req.body;
 
-    console.log({ username, email, avatar });
-
-    const existingUser = await prisma.user.findUnique({
-        where: { email },
-    });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
         createCookieAndSend(
@@ -18,14 +14,17 @@ const googleLogin = async (req, res, next) => {
             200,
             "Logged id with 'Google' successfully ...",
         );
+        return;
     }
 
-    const newUser = await prisma.user.create({
-        data: {
-            username,
-            email,
-            avatar,
-        },
+    const newUser = await User.create({
+        username,
+        email,
+        avatar,
+        newUser: true,
+        isVerified: true,
+        password: "Logwith_3rdParty",
+        passwordConfirm: "Logwith_3rdParty",
     });
 
     createCookieAndSend(
@@ -36,4 +35,4 @@ const googleLogin = async (req, res, next) => {
     );
 };
 
-module.exports = googleLogin;
+module.exports = thirdPartyLogin;

@@ -29,7 +29,24 @@ const login = async (req, res, next) => {
     if (!isPasswordCorrect)
         return next(new AppError("Unvalid 'email' or 'password' !", 404));
 
-    createCookieAndSend(UserToLogin, res, 200, "Logged in successfully ...");
+    const userToSendClient = {
+        id: UserToLogin._id,
+        username: UserToLogin.username,
+        email: UserToLogin.email,
+        isVerified: UserToLogin.isVerified,
+        newUser: UserToLogin.newUser,
+        avatar: UserToLogin.avatar,
+        createdAt: UserToLogin.createdAt,
+        otpExpires: UserToLogin.otpExpires,
+        resetPasswordOtpExpires: UserToLogin.resetPasswordOtpExpires,
+    };
+
+    createCookieAndSend(
+        userToSendClient,
+        res,
+        200,
+        "Logged in successfully ...",
+    );
 };
 
 module.exports = login;
