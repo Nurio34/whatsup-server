@@ -5,7 +5,6 @@ const cookies_expires_in = process.env.COKKIES_EXPIRES_IN;
 
 const createCookieAndSend = (user, res, statusCode, message) => {
     console.log("createCookieAndSend function");
-    console.log({ user });
 
     const isForgetPassword = res.isForgetPassword;
     const isResetPassword = res.isResetPassword;

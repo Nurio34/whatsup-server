@@ -72,6 +72,10 @@ const UserSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        about: {
+            type: String,
+            default: "",
+        },
         otp: {
             type: String,
             default: "",
