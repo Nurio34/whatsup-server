@@ -21,7 +21,7 @@ const thirdPartyLogin = async (req, res, next) => {
         const newUser = await User.create({
             username,
             email,
-            avatar,
+            avatar: { url: avatar },
             newUser: true,
             isVerified: true,
             password: "Loggedinwith_3rdParty",

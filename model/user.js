@@ -65,8 +65,18 @@ const UserSchema = new mongoose.Schema(
             default: true,
         },
         avatar: {
-            type: String,
-            default: "",
+            url: {
+                type: String,
+                default: "",
+            },
+            public_id: {
+                type: String,
+                default: "",
+            },
+            asset_id: {
+                type: String,
+                default: "",
+            },
         },
         isVerified: {
             type: Boolean,

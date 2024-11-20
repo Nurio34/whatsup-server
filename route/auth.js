@@ -17,6 +17,7 @@ const resetPassword = require("../controller/auth/resetPassword");
 const toggleNewUser = require("../controller/auth/toggleNewUser");
 const thirdPartyLogin = require("../controller/auth/thirdPartyLogin");
 const createProfile = require("../controller/auth/createProfile");
+const upload = require("../cloudinary/multer");
 
 router.post(
     "/signup",
@@ -61,6 +62,10 @@ router.post("/firebase-login", catchAsync(thirdPartyLogin));
 
 router.post("/toggle-new-user", catchAsync(toggleNewUser));
 
-router.post("/create-profile", catchAsync(createProfile));
+router.post(
+    "/create-profile",
+    upload.single("avatarFile"),
+    catchAsync(createProfile),
+);
 
 module.exports = router;

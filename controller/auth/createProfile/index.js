@@ -1,12 +1,13 @@
+const { uploadAvatar } = require("../../../cloudinary");
 const User = require("../../../model/user");
 const AppError = require("../../../utils/appError");
 
 const createProfile = async (req, res, next) => {
-    const file = req.file;
     const { id, name, about } = req.body;
+    const { path } = req.file;
 
     try {
-        console.log({ id, name, about, file });
+        const { url, public_id, asset_id } = await uploadAvatar(path);
 
         const user = await User.findByIdAndUpdate(
             id,
@@ -14,6 +15,11 @@ const createProfile = async (req, res, next) => {
                 username: name,
                 about,
                 newUser: false,
+                avatar: {
+                    url,
+                    public_id,
+                    asset_id,
+                },
             },
             { new: true, runValidators: true },
         );
