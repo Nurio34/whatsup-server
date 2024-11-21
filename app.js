@@ -15,19 +15,29 @@ app.use(
     }),
 );
 
-app.use(helmet());
-
 app.use(cookieParser());
+
+// app.use(
+//     cors({
+//         origin: [
+//             "http://localhost:3000",
+//             "https://whatsup-lime-rho.vercel.app",
+//         ],
+//         credentials: true,
+//     }),
+// );
 
 app.use(
     cors({
-        origin: [
-            "http://localhost:3000",
-            "https://whatsup-lime-rho.vercel.app",
-        ],
-        credentials: true,
+        origin: (origin, callback) => {
+            // Allow all origins, even if origin is null (for non-browser clients)
+            callback(null, true);
+        },
+        credentials: true, // Allow credentials (cookies, authorization headers)
     }),
 );
+
+app.use(helmet());
 
 app.use("/api/v1/auth", AuthRouter);
 

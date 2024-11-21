@@ -1,0 +1,13 @@
+
+### *** "CLOUDINARY" CONFIGURATION with "MULTER" CONFIGURATION ***
+
+- /cloudinary/index.js
+- /cloudinary/multer.js
+
+******************************************************************
+
+### *** GOOGLE EMAIL SERVICE CONFIGURATION ***
+
+- /middleware/auth/sentOtpMail.js
+
+**********************************************
