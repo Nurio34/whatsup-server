@@ -29,8 +29,11 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: "*",
-        credentials: true,
+        origin: (origin, callback) => {
+            // Allow all origins, even if origin is null (for non-browser clients)
+            callback(null, true);
+        },
+        credentials: true, // Allow credentials (cookies, authorization headers)
     }),
 );
 
