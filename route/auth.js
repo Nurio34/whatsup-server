@@ -20,27 +20,27 @@ const createProfile = require("../controller/auth/createProfile");
 const upload = require("../cloudinary/multer");
 
 router.post(
-    "/signup",
-    catchAsync(checkIfEmailAlreadyRegistered),
-    createOtp,
-    catchAsync(createNewUser),
-    catchAsync(sendOtpMail),
-    sendCookies,
+  "/signup",
+  catchAsync(checkIfEmailAlreadyRegistered),
+  createOtp,
+  catchAsync(createNewUser),
+  catchAsync(sendOtpMail),
+  sendCookies
 );
 
 router.post(
-    "/verify-email",
-    catchAsync(checkAuthentication),
-    catchAsync(verifyOtp),
+  "/verify-email",
+  catchAsync(checkAuthentication),
+  catchAsync(verifyOtp)
 );
 
 router.post(
-    "/resend-otp",
-    catchAsync(checkEmail),
-    createOtp,
-    catchAsync(updateUser),
-    catchAsync(sendOtpMail),
-    sendCookies,
+  "/resend-otp",
+  catchAsync(checkEmail),
+  createOtp,
+  catchAsync(updateUser),
+  catchAsync(sendOtpMail),
+  sendCookies
 );
 
 router.post("/login", catchAsync(login));
@@ -48,12 +48,12 @@ router.post("/login", catchAsync(login));
 router.post("/logout", logout);
 
 router.post(
-    "/forget-password",
-    catchAsync(checkIfAccountExists),
-    createOtp,
-    catchAsync(updateUser),
-    catchAsync(sendOtpMail),
-    sendCookies,
+  "/forget-password",
+  catchAsync(checkIfAccountExists),
+  createOtp,
+  catchAsync(updateUser),
+  catchAsync(sendOtpMail),
+  sendCookies
 );
 
 router.post("/reset-password", catchAsync(resetPassword));
@@ -63,9 +63,9 @@ router.post("/firebase-login", catchAsync(thirdPartyLogin));
 router.post("/toggle-new-user", catchAsync(toggleNewUser));
 
 router.post(
-    "/create-profile",
-    upload.single("avatarFile"),
-    catchAsync(createProfile),
+  "/create-profile",
+  upload.single("avatarFile"),
+  catchAsync(createProfile)
 );
 
 module.exports = router;

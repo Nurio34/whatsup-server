@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const jwt_secret = process.env.JWT_SECRET;
 const jwt_expires_in = process.env.JWT_EXPIRES_IN;
 const cookies_expires_in = process.env.COKKIES_EXPIRES_IN;
+const node_env = process.env.NODE_ENV;
 
 const createCookieAndSend = (user, res, statusCode, message) => {
   console.log("createCookieAndSend function");
@@ -16,6 +17,7 @@ const createCookieAndSend = (user, res, statusCode, message) => {
   const cookiesOption = {
     expires: new Date(Date.now() + cookies_expires_in * 24 * 60 * 60 * 1000),
     httpOnly: true,
+    // secure: node_env === "production",
     secure: true,
     sameSite: "none",
   };

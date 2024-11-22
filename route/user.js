@@ -1,9 +1,11 @@
 const express = require("express");
+const catchAsync = require("../utils/catchAsync");
 const getUser = require("../controller/user/getUser");
 const getAllUsers = require("../controller/user/getAllUsers");
+const checkAuthentication = require("../middleware/auth/checkAuthentication");
 const router = express.Router();
 
-router.post("/get-user", getUser);
-router.get("/get-all-users", getAllUsers);
+router.get("/get-user", catchAsync(checkAuthentication), catchAsync(getUser));
+router.get("/get-all-users", catchAsync(getAllUsers));
 
 module.exports = router;
