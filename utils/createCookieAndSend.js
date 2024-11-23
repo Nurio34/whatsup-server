@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const jwt_secret = process.env.JWT_SECRET;
 const jwt_expires_in = process.env.JWT_EXPIRES_IN;
-const cookies_expires_in = process.env.COKKIES_EXPIRES_IN;
+const cookies_expires_in = process.env.COOKIES_EXPIRES_IN;
 const node_env = process.env.NODE_ENV;
 
 const createCookieAndSend = (user, res, statusCode, message) => {

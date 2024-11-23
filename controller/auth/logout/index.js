@@ -1,4 +1,5 @@
 const node_env = process.env.NODE_ENV;
+const cookies_expires_in = process.env.COOKIES_EXPIRES_IN;
 
 const logout = (req, res) => {
   console.log("logout function");
