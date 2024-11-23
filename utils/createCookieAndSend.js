@@ -19,7 +19,10 @@ const createCookieAndSend = (user, res, statusCode, message) => {
     httpOnly: true,
     secure: node_env === "production", // Secure cookies in production
     sameSite: node_env === "production" ? "none" : "lax", // SameSite for local development
-    domain: node_env === "production" ? ".vercel.app" : undefined, // Avoid domain setting in localhost
+    domain:
+      node_env === "production"
+        ? "https://whatsup-lime-rho.vercel.app"
+        : undefined, // Avoid domain setting in localhost
   };
 
   res.cookie("auth-token", token, cookiesOption);
