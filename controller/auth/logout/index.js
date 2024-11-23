@@ -6,8 +6,9 @@ const logout = (req, res) => {
   res.cookie("auth-token", "", {
     expires: new Date(Date.now() + cookies_expires_in * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: node_env === "production", // Use secure cookies in production
-    sameSite: node_env === "production" ? "none" : "lax", // Use lax for local development
+    secure: node_env === "production", // Secure cookies in production
+    sameSite: node_env === "production" ? "none" : "lax", // SameSite for local development
+    domain: node_env === "production" ? ".vercel.app" : undefined, // Avoid domain setting in localhost
   });
 
   res.status(200).json({
