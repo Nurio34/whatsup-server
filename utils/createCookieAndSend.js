@@ -17,9 +17,8 @@ const createCookieAndSend = (user, res, statusCode, message) => {
   const cookiesOption = {
     expires: new Date(Date.now() + cookies_expires_in * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    // secure: node_env === "production",
-    secure: true,
-    sameSite: "none",
+    secure: node_env === "production", // Use secure cookies in production
+    sameSite: node_env === "production" ? "none" : "lax", // Use lax for local development
   };
 
   res.cookie("auth-token", token, cookiesOption);
