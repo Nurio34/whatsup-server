@@ -22,7 +22,7 @@ const connect = async (req, res, next) => {
       );
     }
 
-    let foundUserContacts = await Contact.findOne({ foundUserId });
+    let foundUserContacts = await Contact.findOne({ userId: foundUserId });
 
     if (!foundUserContacts) {
       foundUserContacts = await Contact.create({
@@ -31,7 +31,7 @@ const connect = async (req, res, next) => {
       });
     } else {
       foundUserContacts = await Contact.findOneAndUpdate(
-        { foundUserId },
+        { userId: foundUserId },
         { $addToSet: { connectWith: userId } },
         { new: true, upsert: true }
       );
