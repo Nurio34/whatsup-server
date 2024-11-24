@@ -5,11 +5,7 @@ const getAllUsers = require("../controller/user/getAllUsers");
 const checkAuthentication = require("../middleware/auth/checkAuthentication");
 const router = express.Router();
 
-router.get(
-  "/get-user/:id",
-  catchAsync(checkAuthentication),
-  catchAsync(getUser)
-);
+router.get("/get-user", catchAsync(checkAuthentication), catchAsync(getUser));
 router.get("/get-all-users", catchAsync(getAllUsers));
 
 module.exports = router;

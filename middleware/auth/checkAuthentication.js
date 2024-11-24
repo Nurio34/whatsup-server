@@ -6,30 +6,48 @@ const User = require("../../model/user");
 const checkAuthentication = async (req, res, next) => {
   console.log("checkAuthentication middleware");
 
-  const authHeader = req.headers.authorization;
-  const cookiesToken = req.cookies["auth-token"];
-  const { id: userId } = req.params;
+  try {
+    const authHeader = req.headers.authorization;
+    const cookiesToken = req.cookies["auth-token"];
 
-  console.log(!cookiesToken && !authHeader && !userId);
-  if (!cookiesToken && !authHeader && !userId)
-    return next(new AppError("There is not a token !", 401));
+    if (!cookiesToken && !authHeader) {
+      return next(new AppError("Token not found. Please login!", 401));
+    }
 
-  const token = authHeader?.split(" ")[1] || cookiesToken;
+    const token = authHeader?.split(" ")[1] || cookiesToken;
 
-  let id;
+    // Verify the token
+    const decoded = jwt.verify(token, jwt_secret);
 
-  if (token) {
-    id = jwt.verify(token, jwt_secret);
-  } else {
-    id = userId;
+    // Fetch user from the database
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return next(new AppError("User not found. Token is invalid!", 401));
+    }
+
+    // Attach user to the request object
+    req.user = user;
+
+    next();
+  } catch (error) {
+    // Handle specific JWT errors
+    if (error.name === "JsonWebTokenError") {
+      console.log("Invalid token. Please login again!");
+
+      return next(new AppError("Invalid token. Please login again!", 401));
+    }
+    if (error.name === "TokenExpiredError") {
+      console.log("Token expired. Please login again!");
+
+      return next(new AppError("Token expired. Please login again!", 401));
+    }
+
+    // Handle unexpected errors
+    console.log("Authentication failed. Please try again.");
+
+    return next(new AppError("Authentication failed. Please try again.", 500));
   }
-
-  const user = await User.findById(id);
-
-  if (!user) return next(new AppError("Token is broken !", 400));
-
-  req.user = user;
-  next();
 };
 
 module.exports = checkAuthentication;

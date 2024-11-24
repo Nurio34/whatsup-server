@@ -7,6 +7,7 @@ const error = require("./controller/error");
 
 const AuthRouter = require("./route/auth");
 const UserRouter = require("./route/user");
+const ContactRouter = require("./route/contact");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use(helmet());
 
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/contact", ContactRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server !`, 404));
