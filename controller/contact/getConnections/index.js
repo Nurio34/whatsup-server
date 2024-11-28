@@ -11,7 +11,6 @@ const getConnections = async (req, res, next) => {
       { userId },
       { connectWith: 1, _id: 0 }
     );
-    console.log(contact);
 
     if (!contact) return next(new AppError("No Contacts", 404));
 
