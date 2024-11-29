@@ -8,6 +8,7 @@ const error = require("./controller/error");
 const AuthRouter = require("./route/auth");
 const UserRouter = require("./route/user");
 const ContactRouter = require("./route/contact");
+const ChatRouter = require("./route/chat");
 
 const app = express();
 
@@ -26,21 +27,12 @@ app.use(
   })
 );
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       // Allow all origins, even if origin is null (for non-browser clients)
-//       callback(null, true);
-//     },
-//     credentials: true, // Allow credentials (cookies, authorization headers)
-//   })
-// );
-
 app.use(helmet());
 
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/contact", ContactRouter);
+app.use("/api/v1/chat", ChatRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server !`, 404));

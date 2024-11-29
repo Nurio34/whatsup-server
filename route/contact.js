@@ -7,7 +7,7 @@ const getConnections = require("../controller/contact/getConnections");
 const getConnection = require("../controller/contact/getConnection");
 
 router.get("/connect/:userId/:foundUserId", catchAsync(connect));
-router.get("/getConnections/:userId", getConnections);
-router.get("/getConnection/:id", getConnection);
+router.get("/getConnections/:userId", catchAsync(getConnections));
+router.get("/getConnection/:id", catchAsync(getConnection));
 
 module.exports = router;
