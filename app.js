@@ -40,4 +40,6 @@ app.all("*", (req, res, next) => {
 
 app.use(error);
 
+global.onlineUsers = new Map();
+
 module.exports = app;

@@ -5,6 +5,8 @@ const sendMessage = async (req, res, next) => {
   console.log("sendMessage function");
 
   const { senderId, reciverId, message, type } = req.body;
+  const isReciverOnline = onlineUsers.get(reciverId);
+  console.log({ isReciverOnline });
 
   if (
     !Boolean(senderId) ||
@@ -19,7 +21,7 @@ const sendMessage = async (req, res, next) => {
     senderId,
     reciverId,
     type,
-    status: "sent",
+    status: isReciverOnline ? "delivered" : "sent",
   });
 
   if (!newMessage)
