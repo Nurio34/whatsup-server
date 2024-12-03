@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -26,9 +26,33 @@ server.listen(PORT, (e) => console.log(`Server running at port ${PORT}`));
 global.onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-  global.chatSocket = socket;
+  // console.log("User connected: ", socket.id);
+
   socket.on("add-user", (userId) => {
-    onlineUsers.set(userId, socket.id);
-    console.log(`${userId} is online`);
+    global.onlineUsers.set(userId, socket.id);
+    console.log(`User ${userId} added with socket ID: ${socket.id}`);
+    console.log(onlineUsers);
+  });
+
+  socket.on("send-message", (message) => {
+    const sendUserSocket = global.onlineUsers.get(message.reciverId);
+
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("get-message", message);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket disconnected: ${socket.id}`);
+
+    global.onlineUsers.forEach((socketId, userId) => {
+      if (socketId === socket.id) {
+        global.onlineUsers.delete(userId);
+        console.log(
+          `User ${userId} disconnected and removed from onlineUsers.`
+        );
+      }
+    });
+    console.log(onlineUsers);
   });
 });
