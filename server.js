@@ -35,10 +35,30 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message", (message) => {
-    const sendUserSocket = global.onlineUsers.get(message.reciverId);
+    const reciverSocket = global.onlineUsers.get(message.reciverId);
+    const senderSocket = global.onlineUsers.get(message.senderId);
 
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("get-message", message);
+    console.log({ reciverSocket, senderSocket });
+
+    if (reciverSocket) {
+      io.to(reciverSocket).emit("get-message", {
+        ...message,
+        status: "delivered",
+      });
+    }
+
+    if (reciverSocket && senderSocket) {
+      io.to(senderSocket).emit("get-message", {
+        ...message,
+        status: "delivered",
+      });
+    }
+
+    if (!reciverSocket && senderSocket) {
+      io.to(senderSocket).emit("get-message", {
+        ...message,
+        status: "sent",
+      });
     }
   });
 
