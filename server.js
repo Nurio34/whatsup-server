@@ -24,55 +24,72 @@ const io = new Server(server, {
 server.listen(PORT, (e) => console.log(`Server running at port ${PORT}`));
 
 global.onlineUsers = new Map();
+global.offlineMessages = new Map(); // Store undelivered messages
 
 io.on("connection", (socket) => {
-  // console.log("User connected: ", socket.id);
-
   socket.on("add-user", (userId) => {
     global.onlineUsers.set(userId, socket.id);
-    console.log(`User ${userId} added with socket ID: ${socket.id}`);
-    console.log(onlineUsers);
+
+    // Check if the user has any undelivered messages
+    const messages = global.offlineMessages.get(userId);
+    if (messages && messages.length > 0) {
+      // Deliver undelivered messages
+      messages.forEach((message) => {
+        socket.emit("get-message", message);
+      });
+
+      // Clear delivered messages
+      global.offlineMessages.delete(userId);
+    }
   });
 
   socket.on("send-message", (message) => {
     const reciverSocket = global.onlineUsers.get(message.reciverId);
     const senderSocket = global.onlineUsers.get(message.senderId);
 
-    console.log({ reciverSocket, senderSocket });
-
     if (reciverSocket) {
       io.to(reciverSocket).emit("get-message", {
         ...message,
         status: "delivered",
       });
-    }
+    } else {
+      // Store message for offline recipient
+      if (!global.offlineMessages.has(message.reciverId)) {
+        global.offlineMessages.set(message.reciverId, []);
+      }
 
-    if (reciverSocket && senderSocket) {
-      io.to(senderSocket).emit("get-message", {
+      global.offlineMessages.get(message.reciverId).push({
         ...message,
-        status: "delivered",
+        status: "pending",
       });
     }
 
-    if (!reciverSocket && senderSocket) {
+    // Notify sender of delivery status
+    if (senderSocket) {
       io.to(senderSocket).emit("get-message", {
         ...message,
-        status: "sent",
+        status: reciverSocket ? "delivered" : "sent",
       });
     }
   });
 
-  socket.on("disconnect", () => {
-    console.log(`Socket disconnected: ${socket.id}`);
+  socket.on("messages-seen", (data) => {
+    const { userId, connectionId } = data;
+    const reciverSocket = global.onlineUsers.get(connectionId);
 
+    if (reciverSocket) {
+      // Notify the recipient
+      io.to(reciverSocket).emit("message-seen", userId);
+    } else {
+      console.log("Recipient is not online.");
+    }
+  });
+
+  socket.on("disconnect", () => {
     global.onlineUsers.forEach((socketId, userId) => {
       if (socketId === socket.id) {
         global.onlineUsers.delete(userId);
-        console.log(
-          `User ${userId} disconnected and removed from onlineUsers.`
-        );
       }
     });
-    console.log(onlineUsers);
   });
 });
