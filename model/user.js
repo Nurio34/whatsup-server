@@ -82,6 +82,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    status: {
+      type: String,
+      default: "offline",
+    },
     otp: {
       type: String,
       default: "",

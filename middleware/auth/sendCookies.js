@@ -23,6 +23,7 @@ const sendCookies = (req, res) => {
     otpExpires: user.otpExpires,
     resetPasswordOtpExpires: user.resetPasswordOtpExpires,
     about: user.about,
+    status: user.status,
   };
 
   createCookieAndSend(

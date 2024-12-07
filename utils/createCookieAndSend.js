@@ -37,6 +37,7 @@ const createCookieAndSend = (user, res, statusCode, message) => {
           avatar: user.avatar,
           createdAt: user.createdAt,
           about: user.about,
+          status: user.status,
         };
 
   return res.status(statusCode).json({
