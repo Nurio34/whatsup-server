@@ -16,7 +16,7 @@ const getChat = async (req, res, next) => {
     ],
   })
     .sort({ createdAt: 1 })
-    .select("type message status senderId createdAt");
+    .select("type message status senderId createdAt _id");
 
   if (!Boolean(messages))
     return next(new AppError("There is not a chat between users !"), 404);
