@@ -52,6 +52,7 @@ changeStream.on("change", (change) => {
 
   if (chanage_type === "insert") {
     const newMessage = change.fullDocument;
+
     const { _id, senderId, type, message, status, createdAt } = newMessage;
     const filteredNewMessage = {
       _id,
@@ -67,8 +68,6 @@ changeStream.on("change", (change) => {
     );
     const senderSocket = global.onlineUsers.get(newMessage.senderId.toString());
     const sockets = [reciverSocket, senderSocket];
-
-    // Emit the message to both the sender and receiver if they are online
 
     if (reciverSocket && senderSocket) {
       sockets.forEach((socket) => {
