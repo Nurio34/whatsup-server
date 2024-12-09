@@ -53,7 +53,8 @@ changeStream.on("change", (change) => {
   if (chanage_type === "insert") {
     const newMessage = change.fullDocument;
 
-    const { _id, senderId, type, message, status, createdAt } = newMessage;
+    const { _id, senderId, type, message, status, createdAt, medias } =
+      newMessage;
     const filteredNewMessage = {
       _id,
       senderId,
@@ -61,6 +62,7 @@ changeStream.on("change", (change) => {
       message,
       status,
       createdAt,
+      medias,
     };
 
     const reciverSocket = global.onlineUsers.get(

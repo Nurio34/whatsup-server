@@ -13,6 +13,17 @@ const MessageSchema = new mongoose.Schema(
     type: String,
     message: String,
     status: String,
+    medias: [
+      {
+        asset_id: String,
+        public_id: String,
+        width: Number,
+        height: Number,
+        resource_type: String,
+        url: String,
+        format: String,
+      },
+    ],
   },
   { timestamps: true, collection: "Message" }
 );

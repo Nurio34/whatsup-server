@@ -7,6 +7,8 @@ const getChat = require("../controller/chat/getChat");
 const messagesSeen = require("../controller/chat/messagesSeen");
 const messagesDelivered = require("../controller/chat/messagesDelivered");
 const fetchLostMessages = require("../controller/chat/fetchLostMessages");
+const upload = require("../cloudinary/multer");
+const sendMediaMessage = require("../controller/chat/sendMediaMessage");
 
 router.post("/send-message", catchAsync(sendMessage));
 router.get("/get-chat/:userId/:connectionId", catchAsync(getChat));
@@ -18,6 +20,11 @@ router.get(
 router.post(
   "/fetch-lost-messages/:userId/:connectionId",
   catchAsync(fetchLostMessages)
+);
+router.post(
+  "/send-media-message",
+  upload.array("files"),
+  catchAsync(sendMediaMessage)
 );
 
 module.exports = router;
