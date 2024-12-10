@@ -9,7 +9,6 @@ const findUser = async (req, res, next) => {
     const user = await User.findOne({ username }).select(
       "avatar.url _id username"
     );
-    console.log(user);
 
     if (!user) return next(new AppError("Error while findUser() !", 404));
 

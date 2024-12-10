@@ -43,8 +43,6 @@ const createProfile = async (req, res, next) => {
     status: user.status,
   };
 
-  console.log(userToSendClient);
-
   return res.status(200).json({
     status: "success",
     message: "Profile created successfully ...",
