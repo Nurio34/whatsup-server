@@ -21,6 +21,7 @@ const MessageSchema = new mongoose.Schema(
         height: Number,
         resource_type: String,
         url: String,
+        secure_url: String,
         format: String,
       },
     ],

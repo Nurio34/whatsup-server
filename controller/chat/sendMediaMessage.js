@@ -47,10 +47,27 @@ const sendMediaMessage = async (req, res, next) => {
       uploadApplicationsResponse
     )
     .map((response) => {
-      const { asset_id, public_id, width, height, resource_type, url, format } =
-        response;
+      const {
+        asset_id,
+        public_id,
+        width,
+        height,
+        resource_type,
+        url,
+        secure_url,
+        format,
+      } = response;
 
-      return { asset_id, public_id, width, height, resource_type, url, format };
+      return {
+        asset_id,
+        public_id,
+        width,
+        height,
+        resource_type,
+        url,
+        secure_url,
+        format,
+      };
     });
 
   const isReciverOnline = onlineUsers.get(reciverId);
