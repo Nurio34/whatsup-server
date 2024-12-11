@@ -28,11 +28,7 @@ router.post(
   sendCookies
 );
 
-router.post(
-  "/verify-email",
-  catchAsync(checkAuthentication),
-  catchAsync(verifyOtp)
-);
+router.post("/verify-email", catchAsync(verifyOtp));
 
 router.post(
   "/resend-otp",
