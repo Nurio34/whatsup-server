@@ -11,8 +11,14 @@ const getConnections = async (req, res, next) => {
       { userId },
       { connectWith: 1, _id: 0 }
     );
+    console.log({ contact });
 
-    if (!contact) return next(new AppError("No Contacts", 404));
+    if (!contact) {
+      return res.status(200).json({
+        status: "success",
+        connectWith: [],
+      });
+    }
 
     return res.status(200).json({
       status: "success",
