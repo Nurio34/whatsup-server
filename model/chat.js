@@ -23,6 +23,7 @@ const MessageSchema = new mongoose.Schema(
         url: String,
         secure_url: String,
         format: String,
+        duration: Number,
       },
     ],
   },

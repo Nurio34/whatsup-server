@@ -47,6 +47,8 @@ const sendMediaMessage = async (req, res, next) => {
       uploadApplicationsResponse
     )
     .map((response) => {
+      console.log(response);
+
       const {
         asset_id,
         public_id,
@@ -56,6 +58,7 @@ const sendMediaMessage = async (req, res, next) => {
         url,
         secure_url,
         format,
+        duration,
       } = response;
 
       return {
@@ -67,6 +70,7 @@ const sendMediaMessage = async (req, res, next) => {
         url,
         secure_url,
         format,
+        duration,
       };
     });
 
