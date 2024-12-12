@@ -45,9 +45,11 @@ io.on("connection", (socket) => {
 });
 
 const changeStream = Message.watch([], { fullDocument: "updateLookup" });
+console.log("changeStream:", changeStream);
 
 changeStream.on("change", (change) => {
   const chanage_type = change.operationType;
+  console.log("change_type", chanage_type);
 
   if (chanage_type === "insert") {
     const newMessage = change.fullDocument;
