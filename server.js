@@ -22,24 +22,23 @@ const io = new Server(server, {
   },
 });
 
-server.listen(PORT, (e) => console.log(`Server running at port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running at port ${PORT}`));
 
 global.onlineUsers = new Map();
-global.offlineMessages = new Map(); // Store undelivered messages
 
 io.on("connection", (socket) => {
   socket.on("add-user", (userId) => {
     global.onlineUsers.set(userId, socket.id);
-    // console.log(`${userId} is Online now..`);
-    // console.log(onlineUsers);
+    console.log(`${userId} is Online now..`);
+    console.log(onlineUsers);
   });
 
   socket.on("disconnect", () => {
     global.onlineUsers.forEach((socketId, userId) => {
       if (socketId === socket.id) {
         global.onlineUsers.delete(userId);
-        // console.log(`${userId} is Offline now..`);
-        // console.log(onlineUsers);
+        console.log(`${userId} is Offline now..`);
+        console.log(onlineUsers);
       }
     });
   });
@@ -52,6 +51,7 @@ changeStream.on("change", (change) => {
 
   if (chanage_type === "insert") {
     const newMessage = change.fullDocument;
+    console.log("New message detected !", newMessage);
 
     const { _id, senderId, type, message, status, createdAt, medias } =
       newMessage;
@@ -70,6 +70,7 @@ changeStream.on("change", (change) => {
     );
     const senderSocket = global.onlineUsers.get(newMessage.senderId.toString());
     const sockets = [reciverSocket, senderSocket];
+    console.log("Sockets:", sockets);
 
     if (reciverSocket && senderSocket) {
       sockets.forEach((socket) => {
