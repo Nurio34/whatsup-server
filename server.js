@@ -42,6 +42,9 @@ io.on("connection", (socket) => {
       }
     });
   });
+  socket.on("delete-message", (data) => {
+    console.log({ data });
+  });
 });
 
 const changeStream = Message.watch([], { fullDocument: "updateLookup" });

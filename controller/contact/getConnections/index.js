@@ -6,27 +6,19 @@ const getConnections = async (req, res, next) => {
 
   const { userId } = req.params;
 
-  try {
-    const contact = await Contact.findOne(
-      { userId },
-      { connectWith: 1, _id: 0 }
-    );
-    console.log({ contact });
+  const contact = await Contact.findOne({ userId }, { connectWith: 1, _id: 0 });
 
-    if (!contact) {
-      return res.status(200).json({
-        status: "success",
-        connectWith: [],
-      });
-    }
-
+  if (!contact) {
     return res.status(200).json({
       status: "success",
-      connectWith: contact.connectWith,
+      connectWith: [],
     });
-  } catch (error) {
-    next(new AppError("Server Error", 500));
   }
+
+  return res.status(200).json({
+    status: "success",
+    connectWith: contact.connectWith,
+  });
 };
 
 module.exports = getConnections;
