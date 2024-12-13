@@ -43,7 +43,27 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("delete-message", (data) => {
-    console.log({ data });
+    const { messageId, userId, connectionId } = data;
+    const reciverSocket = global.onlineUsers.get(connectionId.toString());
+    const senderSocket = global.onlineUsers.get(userId.toString());
+    const sockets = [reciverSocket, senderSocket];
+    console.log("Sockets:", sockets);
+
+    if (reciverSocket && senderSocket) {
+      sockets.forEach((socket) => {
+        io.to(socket).emit("delete-message", {
+          messageId,
+          userId,
+          connectionId,
+        });
+      });
+    } else if (!reciverSocket && senderSocket) {
+      io.to(senderSocket).emit("delete-message", {
+        messageId,
+        userId,
+        connectionId,
+      });
+    }
   });
 });
 
