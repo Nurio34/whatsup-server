@@ -65,6 +65,31 @@ io.on("connection", (socket) => {
       });
     }
   });
+  socket.on("delete-messages", (data) => {
+    const { messages, userId, connectionId } = data;
+    console.log({ messages, userId, connectionId });
+
+    const reciverSocket = global.onlineUsers.get(connectionId.toString());
+    const senderSocket = global.onlineUsers.get(userId.toString());
+    const sockets = [reciverSocket, senderSocket];
+    console.log("Sockets:", sockets);
+
+    if (reciverSocket && senderSocket) {
+      sockets.forEach((socket) => {
+        io.to(socket).emit("delete-messages", {
+          messagesIds: messages.map((message) => message._id),
+          userId,
+          connectionId,
+        });
+      });
+    } else if (!reciverSocket && senderSocket) {
+      io.to(senderSocket).emit("delete-message", {
+        messagesIds: messages.map((message) => message._id),
+        userId,
+        connectionId,
+      });
+    }
+  });
 });
 
 const changeStream = Message.watch([], { fullDocument: "updateLookup" });

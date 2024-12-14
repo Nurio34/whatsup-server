@@ -71,7 +71,25 @@ const deleteImage = async (publicId) => {
       resource_type: "image",
     });
   } catch (error) {
-    throw new Error("Error while deleting the mimage from cloudinary");
+    throw new Error("Error while deleting the image from cloudinary");
+  }
+};
+const deleteVideoAudio = async (publicId) => {
+  try {
+    return await cloudinary.uploader.destroy(publicId, {
+      resource_type: "video",
+    });
+  } catch (error) {
+    throw new Error("Error while deleting the video/audio from cloudinary");
+  }
+};
+const deleteApplication = async (publicId) => {
+  try {
+    return await cloudinary.uploader.destroy(publicId, {
+      resource_type: "raw",
+    });
+  } catch (error) {
+    throw new Error("Error while deleting the document from cloudinary");
   }
 };
 
@@ -82,4 +100,6 @@ module.exports = {
   uploadAudioMessage,
   uploadApplicationMessage,
   deleteImage,
+  deleteVideoAudio,
+  deleteApplication,
 };

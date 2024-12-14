@@ -47,8 +47,6 @@ const sendMediaMessage = async (req, res, next) => {
       uploadApplicationsResponse
     )
     .map((response) => {
-      console.log(response);
-
       const {
         asset_id,
         public_id,
