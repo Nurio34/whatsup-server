@@ -67,7 +67,6 @@ io.on("connection", (socket) => {
   });
   socket.on("delete-messages", (data) => {
     const { messages, userId, connectionId } = data;
-    console.log({ messages, userId, connectionId });
 
     const reciverSocket = global.onlineUsers.get(connectionId.toString());
     const senderSocket = global.onlineUsers.get(userId.toString());
@@ -83,7 +82,7 @@ io.on("connection", (socket) => {
         });
       });
     } else if (!reciverSocket && senderSocket) {
-      io.to(senderSocket).emit("delete-message", {
+      io.to(senderSocket).emit("delete-messages", {
         messagesIds: messages.map((message) => message._id),
         userId,
         connectionId,
