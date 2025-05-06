@@ -47,7 +47,6 @@ io.on("connection", (socket) => {
     const reciverSocket = global.onlineUsers.get(connectionId.toString());
     const senderSocket = global.onlineUsers.get(userId.toString());
     const sockets = [reciverSocket, senderSocket];
-    console.log("Sockets:", sockets);
 
     if (reciverSocket && senderSocket) {
       sockets.forEach((socket) => {
@@ -71,7 +70,6 @@ io.on("connection", (socket) => {
     const reciverSocket = global.onlineUsers.get(connectionId.toString());
     const senderSocket = global.onlineUsers.get(userId.toString());
     const sockets = [reciverSocket, senderSocket];
-    console.log("Sockets:", sockets);
 
     if (reciverSocket && senderSocket) {
       sockets.forEach((socket) => {
@@ -92,15 +90,12 @@ io.on("connection", (socket) => {
 });
 
 const changeStream = Message.watch([], { fullDocument: "updateLookup" });
-console.log("changeStream:", changeStream);
 
 changeStream.on("change", (change) => {
   const chanage_type = change.operationType;
-  console.log("change_type", chanage_type);
 
   if (chanage_type === "insert") {
     const newMessage = change.fullDocument;
-    console.log("New message detected !", newMessage);
 
     const { _id, senderId, type, message, status, createdAt, medias } =
       newMessage;
@@ -119,7 +114,6 @@ changeStream.on("change", (change) => {
     );
     const senderSocket = global.onlineUsers.get(newMessage.senderId.toString());
     const sockets = [reciverSocket, senderSocket];
-    console.log("Sockets:", sockets);
 
     if (reciverSocket && senderSocket) {
       sockets.forEach((socket) => {
